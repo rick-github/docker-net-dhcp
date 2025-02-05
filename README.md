@@ -119,18 +119,18 @@ default via 10.255.0.123 dev my-bridge0
 Or, in a Docker Compose file:
 
 ```yaml
-version: '3'
 services:
   app:
-    hostname: my-http
-    image: nginx
-    mac_address: 86:41:68:f8:85:b9
+    hostname: alpine-test-address
+    image: alpine
+    command: ip address show
     networks:
-      - dhcp
+      dhcp:
+        mac_address: 02:00:00:00:00:00
 networks:
   dhcp:
-    external:
-      name: my-dhcp-net
+    name: my-dhcp-net
+    external: true
 ```
 
 The above Compose file assumes your network has already been created with `docker network create`. **This is the
@@ -139,11 +139,11 @@ other containers. However, you can also create the network as part of the Compos
 Compose will manage the network itself (for example deleting it when `docker-compose down` is run).
 
 ```yaml
-version: '3'
 services:
   app:
-    image: nginx
-    hostname: my-server
+    hostname: alpine-test-address
+    image: alpine
+    command: ip address show
     networks:
       - dhcp
 networks:
